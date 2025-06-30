@@ -53,19 +53,13 @@ export default function PopularScreen() {
               </View>
               {/* Info */}
               <View className="flex-1 gap-2 ml-4 justify-center">
-                {/* Premium/Free badge */}
-                <View className="flex-row items-center mb-1">
-                  <Text className={`text-xs font-bold px-2 py-0.5 rounded-full ${movie.id % 2 === 0 ? 'bg-cyan-500 text-white' : 'bg-orange-400 text-white'}`}>{movie.id % 2 === 0 ? 'Free' : 'Premium'}</Text>
-                </View>
                 {/* Title */}
                 <Text className="text-white text-lg font-bold mb-1" numberOfLines={1}>{movie.title}</Text>
                 {/* Year, Duration, Rating */}
                 <View className="flex-row items-center mb-1">
                   <Ionicons name="calendar" size={16} color="#a1a1aa" />
                   <Text className="text-neutral-400 text-sm ml-1 mr-4">{getYear(movie.release_date)}</Text>
-                  <Ionicons name="time" size={16} color="#a1a1aa" />
-                  <Text className="text-neutral-400 text-sm ml-1 mr-4">148 Minutes</Text>
-                  <Text className="text-cyan-400 text-xs font-bold px-2 py-0.5 border border-cyan-400 rounded-md">PG-13</Text>
+                  <Text className="text-cyan-400 text-xs font-bold px-2 py-0.5 border border-cyan-400 rounded-md">{movie.adult ? 'Adult' : 'PG-13'}</Text>
                 </View>
                 {/* Genre, Type */}
                 <View className="flex-row items-center">

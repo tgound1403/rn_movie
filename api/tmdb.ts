@@ -9,6 +9,7 @@ export type Movie = {
   vote_average: number;
   genre_ids?: number[];
   backdrop_path: string | null;
+  adult: boolean;
 };
 
 export type Genre = {
@@ -67,7 +68,7 @@ export async function fetchPopularMovies(page: number = 1): Promise<MovieListRes
       '/movie/popular',
       { params: { page } }
     );
-    console.log('data:', data);
+    console.log('data:', data.results[0]);
     if (!data || !data.results) {
       throw new Error('Invalid response from TMDB API');
     } else {
@@ -87,7 +88,7 @@ export async function fetchTopRatedMovies(page: number = 1): Promise<MovieListRe
       '/movie/top_rated',
       { params: { page } }
     );
-    console.log('top_rated data:', data);
+    console.log('top_rated data:', data.results[0]);
     if (!data || !data.results) {
       throw new Error('Invalid response from TMDB API');
     } else {
