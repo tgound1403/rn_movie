@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import * as React from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getGenreNames, useTmdbStore } from '../lib/tmdb-store';
+import { getGenreNames, useTmdbStore } from '../store/tmdb-store';
 
 function getYear(date?: string) {
   return date ? new Date(date).getFullYear() : '-';
@@ -34,7 +34,7 @@ export default function TopRatedScreen() {
               {/* Poster & Rating */}
               <View>
                 <Image
-                  source={movie.poster_path ? { uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` } : undefined}
+                  source={movie.poster_path ? { uri: `http://image.tmdb.org/t/p/w500${movie.poster_path}` } : undefined}
                   className="w-28 h-40 rounded-2xl"
                   resizeMode="cover"
                 />

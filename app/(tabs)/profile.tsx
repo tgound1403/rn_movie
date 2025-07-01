@@ -11,7 +11,7 @@ export default function ProfileScreen() {
         {/* User Info Card */}
         <View className="flex-row items-center bg-[#232136] rounded-2xl px-4 py-4 mx-4 mb-4">
           <Image
-            source={{ uri: 'https://randomuser.me/api/portraits/women/1.jpg' }}
+            source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
             className="w-14 h-14 rounded-full mr-4"
           />
           <View className="flex-1">

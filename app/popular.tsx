@@ -3,14 +3,14 @@ import { useRouter } from 'expo-router';
 import * as React from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getGenreNames, useTmdbStore } from '../lib/tmdb-store';
+import { getGenreNames, useTmdbStore } from '../store/tmdb-store';
 
 function getYear(date?: string) {
   return date ? new Date(date).getFullYear() : '-';
 }
 
 export default function PopularScreen() {
-  const { movies, genres } = useTmdbStore();
+  const { popularMovies, genres } = useTmdbStore();
   const router = useRouter();
 
   const getMovieGenres = React.useCallback((genreIds?: number[]) => {
@@ -29,7 +29,7 @@ export default function PopularScreen() {
         <Text className="text-white text-2xl font-bold flex-1">Most Popular Movie</Text>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {movies.map((movie) => {
+        {popularMovies.map((movie) => {
           const movieGenres = getMovieGenres(movie.genre_ids);
           const displayGenres = movieGenres.length > 0 ? movieGenres.slice(0, 2).join(', ') : 'Unknown';
 
@@ -42,7 +42,7 @@ export default function PopularScreen() {
               {/* Poster & Rating */}
               <View>
                 <Image
-                  source={movie.poster_path ? { uri: `https://image.tmdb.org/t/p/w500${movie.poster_path}` } : undefined}
+                  source={movie.poster_path ? { uri: `http://image.tmdb.org/t/p/w500${movie.poster_path}` } : undefined}
                   className="w-28 h-40 rounded-2xl"
                   resizeMode="cover"
                 />

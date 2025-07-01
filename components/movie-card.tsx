@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
 import type { Genre } from '../api/tmdb';
-import { getGenreNames } from '../lib/tmdb-store';
+import { getGenreNames } from '../store/tmdb-store';
 
 type Props = {
   title: string;
@@ -28,7 +28,7 @@ export function MovieCard({ title, genre_ids, genres, vote_average, poster_path,
       <View className="bg-neutral-800 rounded-xl overflow-hidden">
         {poster_path ? (
           <Image
-            source={{ uri: `https://image.tmdb.org/t/p/w500${poster_path}` }}
+            source={{ uri: `http://image.tmdb.org/t/p/w500${poster_path}` }}
             className="w-full h-48"
             accessibilityLabel={title}
           />

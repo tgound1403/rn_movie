@@ -3,16 +3,21 @@ import { useRouter } from 'expo-router';
 import * as React from 'react';
 import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { HomeHeader } from '../../components/home-header';
+import { HomeHeader } from '../../components/home/home-header';
 import { MovieCard } from '../../components/movie-card';
 import { MovieCarousel } from '../../components/movie-carousel';
-import { SearchBar } from '../../components/search-bar';
 import { SectionHeader } from '../../components/section-header';
-import { useTmdbStore } from '../../lib/tmdb-store';
+import { useTmdbStore } from '../../store/tmdb-store';
+import { usePopularStore } from '@/store/movie/popular';
+import { useTopRatedStore } from '@/store/movie/top-rated';
+import { SearchBar } from '@/components/search-bar';
 
-export default function HomeScreen() {
-  const { movies, topRatedMovies, genres, isLoading, error, fetchPopular, fetchTopRated, fetchGenres, loadGenresFromStorage } = useTmdbStore();
+const HomeScreen = () => {
+  const { genres, isLoading, error, fetchGenres, loadGenresFromStorage } = useTmdbStore();
+  const { popularMovies, fetchPopular } = usePopularStore();
+  const { topRatedMovies, fetchTopRated } = useTopRatedStore();
   const router = useRouter();
+  const [query, setQuery] = React.useState('');
 
   React.useEffect(() => {
     const initializeData = async () => {
@@ -31,12 +36,20 @@ export default function HomeScreen() {
     initializeData();
   }, [fetchPopular, fetchTopRated, fetchGenres, loadGenresFromStorage, genres.length]);
 
+  const handleSearch = (query: string) => {
+    setQuery(query);
+
+    if (query.length > 0) {
+      router.push(`/search?query=${query}`);
+    }
+  };
+
   return (
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 bg-neutral-900">
         <ScrollView className="flex-1 px-4 pt-4">
           <HomeHeader IconComponent={Ionicons} />
-          <SearchBar IconComponent={Ionicons} />
+          <SearchBar IconComponent={Ionicons} value={query} onChangeText={handleSearch} />
           <SectionHeader
             title="Most popular"
             actionLabel="See All"
@@ -53,7 +66,7 @@ export default function HomeScreen() {
             </View>
           ) : (
             <MovieCarousel
-              movies={movies.slice(0, 7)}
+              movies={popularMovies.slice(0, 7)}
               genres={genres}
               onPressMovie={(movie) => router.push(`/movie/${movie.id}`)}
             />
@@ -91,3 +104,5 @@ export default function HomeScreen() {
     </SafeAreaProvider>
   );
 } 
+
+export default HomeScreen;

@@ -3,7 +3,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as React from 'react';
 import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useTmdbStore } from '../../lib/tmdb-store';
+import { useTmdbStore } from '../../store/tmdb-store';
 
 function getYear(date?: string) {
   return date ? new Date(date).getFullYear() : '-';
@@ -94,7 +94,7 @@ export default function MovieDetailScreen() {
         {/* Poster */}
         <View className="items-center mt-4">
           <Image
-            source={movieDetail.poster_path ? { uri: `https://image.tmdb.org/t/p/w500${movieDetail.poster_path}` } : undefined}
+            source={movieDetail.poster_path ? { uri: `http://image.tmdb.org/t/p/w500${movieDetail.poster_path}` } : undefined}
             className="w-64 h-96 rounded-2xl"
             resizeMode="cover"
           />

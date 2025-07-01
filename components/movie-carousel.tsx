@@ -1,5 +1,5 @@
 import type { Genre, Movie } from '@/api/tmdb';
-import { getGenreNames } from '@/lib/tmdb-store';
+import { getGenreNames } from '@/store/tmdb-store';
 import * as React from 'react';
 import { Dimensions, Image, Pressable, Text, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
@@ -41,7 +41,7 @@ export function MovieCarousel({ movies, genres, onPressMovie }: MovieCarouselPro
               {item.poster_path ? (
                 <>
                   <Image
-                    source={{ uri: `https://image.tmdb.org/t/p/w780${item.backdrop_path}` }}
+                    source={{ uri: `http://image.tmdb.org/t/p/w780${item.backdrop_path}` }}
                     className="w-full h-full"
                     style={{ width: CARD_WIDTH, height: CARD_HEIGHT - 20 }}
                     resizeMode="cover"
