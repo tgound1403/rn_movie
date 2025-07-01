@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import * as React from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
-import { useSearchStore } from "@/store/tmdb-store";
+import { useSearchStore } from "@/store/movie/search";
 
 export default function SearchScreen() {
   const [query, setQuery] = React.useState("");

@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as React from 'react';
-import { Image, Pressable, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTmdbStore } from '../../store/tmdb-store';
 
@@ -40,7 +40,7 @@ export default function MovieDetailScreen() {
   if (isLoading) {
     return (
       <SafeAreaView className="flex-1 bg-neutral-900 justify-center items-center">
-        <Text className="text-white text-lg">Loading movie details...</Text>
+        <ActivityIndicator size="large" color="#fff" />
       </SafeAreaView>
     );
   }

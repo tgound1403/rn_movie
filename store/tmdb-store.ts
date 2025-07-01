@@ -1,8 +1,5 @@
 import { create } from "zustand";
-import {
-  fetchGenres,
-  fetchMovieDetail,
-} from "../api/tmdb";
+import { fetchGenres, fetchMovieDetail } from "../api/tmdb";
 import { getItem, setItem } from "../database/async-storage";
 import { Genre, MovieDetail } from "@/types/app-types";
 
@@ -16,7 +13,7 @@ export type TmdbStore = {
   fetchGenres: () => Promise<void>;
   fetchMovieDetail: (movieId: number) => Promise<void>;
   loadGenresFromStorage: () => Promise<void>;
-}
+};
 
 export const useTmdbStore = create<TmdbStore>((set, get) => ({
   genres: [],
