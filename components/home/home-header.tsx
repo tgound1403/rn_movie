@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Image, Pressable, Text, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 
 type Props = {
   IconComponent: React.ComponentType<any>;
@@ -19,9 +19,6 @@ export function HomeHeader({ IconComponent }: Props) {
           <Text className="text-xs text-neutral-400">Let's stream your favorite movie</Text>
         </View>
       </View>
-      <Pressable accessibilityRole="button" className="p-2 rounded-full bg-neutral-800">
-        <IconComponent name="heart" size={24} color="#ef4444" />
-      </Pressable>
     </View>
   );
 } 

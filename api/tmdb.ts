@@ -69,3 +69,17 @@ export async function fetchMovieDetail(movieId: number): Promise<MovieDetail> {
     throw new Error(error as string);
   }
 } 
+
+export async function fetchTrendingMovies(): Promise<MovieListResponse> {
+  try {
+    const { data } = await apiClient.get<MovieListResponse>(
+      '/trending/movie/week',
+    );
+    if (!data || !data.results) {
+      throw new Error('Invalid response from TMDB API');
+    }
+    return data;
+  } catch (err) {
+    throw new Error(err as string);
+  }
+}

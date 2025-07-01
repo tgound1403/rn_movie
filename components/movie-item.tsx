@@ -14,8 +14,7 @@ export function MovieItem({ movie, genres, onPress }: MovieItemProps) {
     return date ? new Date(date).getFullYear() : "-";
   }, []);
 
-  const displayGenres =
-    genres && genres.length > 0 ? genres.slice(0, 2).join(", ") : "";
+  const displayGenres = genres && genres.length > 0 ? genres.join(", ") : "";
 
   return (
     <Pressable
@@ -34,7 +33,11 @@ export function MovieItem({ movie, genres, onPress }: MovieItemProps) {
           className="w-28 h-40 rounded-2xl"
           resizeMode="cover"
         />
-        <View className="absolute top-2 left-2 bg-black/70 px-2 py-0.5 rounded-full flex-row items-center">
+      </View>
+      {/* Info */}
+      <View className="flex-1 gap-2 ml-4 justify-center">
+        {/* Rating */}
+        <View className="border-2 border-yellow-600 py-1.5 px-3 flex-row items-center w-[60px] rounded-full">
           <Ionicons
             name="star"
             size={14}
@@ -45,9 +48,6 @@ export function MovieItem({ movie, genres, onPress }: MovieItemProps) {
             {movie.vote_average?.toFixed(1) ?? "-"}
           </Text>
         </View>
-      </View>
-      {/* Info */}
-      <View className="flex-1 gap-2 ml-4 justify-center">
         {/* Title */}
         <Text className="text-white text-lg font-bold mb-1" numberOfLines={1}>
           {movie.title}
@@ -68,7 +68,6 @@ export function MovieItem({ movie, genres, onPress }: MovieItemProps) {
           <Text className="text-neutral-400 text-sm ml-1 mr-4">
             {displayGenres}
           </Text>
-          <Text className="text-neutral-400 text-sm">Movie</Text>
         </View>
       </View>
     </Pressable>

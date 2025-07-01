@@ -1,55 +1,51 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import * as React from 'react';
-import { ActivityIndicator, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, ScrollView, Text, View } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { HomeHeader } from '../../components/home/home-header';
 import { MovieCard } from '../../components/movie-card';
 import { MovieCarousel } from '../../components/movie-carousel';
 import { SectionHeader } from '../../components/section-header';
-import { useTmdbStore } from '../../store/tmdb-store';
+import { getGenreNames, useTmdbStore } from '../../store/tmdb-store';
 import { usePopularStore } from '@/store/movie/popular';
 import { useTopRatedStore } from '@/store/movie/top-rated';
-import { SearchBar } from '@/components/search-bar';
+import { useTrendingStore } from '@/store/movie/trending';
+import { MovieItem } from '@/components/movie-item';
+import { useSavedStore } from '@/store/movie/saved';
+import { initSavedDB } from '@/database/saved';
 
 const HomeScreen = () => {
   const { genres, isLoading, error, fetchGenres, loadGenresFromStorage } = useTmdbStore();
   const { popularMovies, fetchPopular } = usePopularStore();
   const { topRatedMovies, fetchTopRated } = useTopRatedStore();
+  const { trendingMovies, fetchTrending } = useTrendingStore();
+  const { fetchSavedMovies } = useSavedStore();
   const router = useRouter();
-  const [query, setQuery] = React.useState('');
 
   React.useEffect(() => {
     const initializeData = async () => {
-      // Load genres from storage first
+      await initSavedDB();
       await loadGenresFromStorage();
-      
-      // Fetch fresh data
+
       await Promise.all([
-        fetchPopular(),
-        fetchTopRated(),
+        popularMovies.length === 0 ? fetchPopular() : Promise.resolve(),
+        topRatedMovies.length === 0 ? fetchTopRated() : Promise.resolve(),
+        trendingMovies.length === 0 ? fetchTrending() : Promise.resolve(),
+        fetchSavedMovies(),
         // Only fetch genres if we don't have them locally
         genres.length === 0 ? fetchGenres() : Promise.resolve()
       ]);
     };
 
     initializeData();
-  }, [fetchPopular, fetchTopRated, fetchGenres, loadGenresFromStorage, genres.length]);
-
-  const handleSearch = (query: string) => {
-    setQuery(query);
-
-    if (query.length > 0) {
-      router.push(`/search?query=${query}`);
-    }
-  };
+  }, [fetchPopular, fetchTopRated, fetchGenres, fetchTrending, loadGenresFromStorage, genres.length]);
 
   return (
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 bg-neutral-900">
-        <ScrollView className="flex-1 px-4 pt-4">
+        <ScrollView className="flex-1 px-4 pt-4 pb-10">
           <HomeHeader IconComponent={Ionicons} />
-          <SearchBar IconComponent={Ionicons} value={query} onChangeText={handleSearch} />
           <SectionHeader
             title="Most popular"
             actionLabel="See All"
@@ -98,6 +94,31 @@ const HomeScreen = () => {
                 />
               ))}
             </ScrollView>
+          )}
+          <SectionHeader
+            title="#10 on Trending"
+            actionLabel="See All"
+            IconComponent={Ionicons}
+            onActionPress={() => router.push('/trending')}
+          />
+          {isLoading ? (
+            <View className="flex-row justify-center py-8">
+              <ActivityIndicator size="large" color="#06b6d4" />
+            </View>
+          ) : error ? (
+            <View className="flex-row justify-center py-8">
+              <Text className="text-red-400 text-base">{error}</Text>
+            </View>
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
+              data={trendingMovies.slice(0, 10)}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <MovieItem movie={item} genres={getGenreNames(item.genre_ids ?? [], genres)} onPress={() => router.push(`/movie/${item.id}`)} />
+              )}
+            />
           )}
         </ScrollView>
       </SafeAreaView>

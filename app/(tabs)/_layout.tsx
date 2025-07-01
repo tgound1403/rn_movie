@@ -8,7 +8,7 @@ import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context"
 const TAB_ICONS: { name: keyof typeof Ionicons.glyphMap; label: string }[] = [
   { name: "home", label: "Home" },
   { name: "search", label: "Search" },
-  { name: "download", label: "Downloads" },
+  { name: "heart", label: "Saved" },
   { name: "person", label: "Profile" },
 ];
 
@@ -18,17 +18,11 @@ function BottomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
     <View
       className="absolute left-4 right-4 flex-row justify-between items-center rounded-full bg-zinc-800 p-2 shadow-lg"
       style={{
-        bottom: insets.bottom + 16,
-        elevation: 8,
-        shadowColor: "#000",
-        shadowOpacity: 0.15,
-        shadowRadius: 12,
-        shadowOffset: { width: 0, height: 4 },
+        bottom: insets.bottom
       }}
       accessibilityRole="tablist"
     >
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
         const isFocused = state.index === index;
         const iconName = TAB_ICONS[index]?.name || "ellipse";
         const label = TAB_ICONS[index]?.label || route.name;
@@ -71,7 +65,7 @@ export default function TabLayout() {
     >
       <Tabs.Screen name="home" options={{ title: "Home" }} />
       <Tabs.Screen name="search" options={{ title: "Search" }} />
-      <Tabs.Screen name="downloads" options={{ title: "Downloads" }} />
+      <Tabs.Screen name="saved" options={{ title: "Saved" }} />
       <Tabs.Screen name="profile" options={{ title: "Profile" }} />
     </Tabs>
     </SafeAreaView>

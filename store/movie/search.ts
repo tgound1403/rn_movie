@@ -7,6 +7,7 @@ export type SearchStore = {
   isLoading: boolean;
   error: string | null;
   search: (query: string, page?: number) => Promise<void>;
+  clearSearch: () => void;
 };
 
 export const useSearchStore = create<SearchStore>((set, get) => ({
@@ -22,4 +23,7 @@ export const useSearchStore = create<SearchStore>((set, get) => ({
       set({ error: e?.message || "Failed to search movies", isLoading: false });
     }
   },
+  clearSearch() {
+    set({ searchResults: [], isLoading: false, error: null });
+  }
 }));

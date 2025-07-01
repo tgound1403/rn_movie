@@ -1,4 +1,4 @@
-import type { Genre, Movie } from "@/api/tmdb";
+import type { Genre, Movie } from "@/types/app-types";
 import { getGenreNames } from "@/store/tmdb-store";
 import * as React from "react";
 import { Dimensions, Image, Pressable, Text, View } from "react-native";

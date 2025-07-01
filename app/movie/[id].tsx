@@ -4,6 +4,9 @@ import * as React from 'react';
 import { ActivityIndicator, Image, Pressable, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTmdbStore } from '../../store/tmdb-store';
+import { useSavedStore } from '@/store/movie/saved';
+import { Movie, MovieDetail } from '@/types/app-types';
+import { useState } from 'react';
 
 function getYear(date?: string) {
   return date ? new Date(date).getFullYear() : '-';
@@ -29,13 +32,17 @@ function formatCurrency(amount: number): string {
 export default function MovieDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { movieDetail, isLoading, error, fetchMovieDetail } = useTmdbStore();
+  const { saveMovie, savedMovies, removeMovie, fetchSavedMovies } = useSavedStore();
   const router = useRouter();
+
+  const initialIsSaved = savedMovies ? savedMovies.some(m => m.id === movieDetail?.id) : false;
+  const [isSaved, setIsSaved] = useState(initialIsSaved);
 
   React.useEffect(() => {
     if (id) {
       fetchMovieDetail(parseInt(id));
     }
-  }, [id, fetchMovieDetail]);
+  }, [id]);
 
   if (isLoading) {
     return (
@@ -77,6 +84,17 @@ export default function MovieDetailScreen() {
     ? movieDetail.genres.slice(0, 3).map(g => g.name).join(', ') 
     : 'Unknown';
 
+  const handleSaveMovie = async () => {
+    if (isSaved) {
+      setIsSaved(false);
+      await removeMovie(movieDetail.id);
+    } else {
+      setIsSaved(true);
+      await saveMovie(movieDetail);
+    }
+    await fetchSavedMovies();
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-neutral-900">
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -86,8 +104,8 @@ export default function MovieDetailScreen() {
             <Ionicons name="chevron-back" size={24} color="#fff" />
           </Pressable>
           <Text className="text-white text-xl font-bold flex-1" numberOfLines={1}>{movieDetail.title}</Text>
-          <Pressable className="p-2 rounded-full bg-neutral-800 ml-2">
-            <Ionicons name="heart" size={24} color="#ef4444" />
+          <Pressable onPress={handleSaveMovie} className="p-2 rounded-full bg-neutral-800 ml-2">
+            <Ionicons name="heart" size={24} color={isSaved ? "#ef4444" : "#a1a1aa"} />
           </Pressable>
         </View>
 
