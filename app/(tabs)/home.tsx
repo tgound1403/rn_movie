@@ -1,9 +1,14 @@
 import { MovieItem } from "@/components/movie-item";
+import { initSavedDB } from "@/database/saved";
 import { useTmdb } from "@/hooks/useTmdb";
+import { useHomeStore } from "@/store/home-store";
+import { useSavedStore } from "@/store/movie/saved";
+import { useTrendingStore } from "@/store/movie/trending";
 import { useTmdbStore } from "@/store/tmdb-store";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import * as React from "react";
+import { useEffect, useRef } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -16,14 +21,9 @@ import { HomeHeader } from "../../components/home/home-header";
 import { MovieCard } from "../../components/movie-card";
 import { MovieCarousel } from "../../components/movie-carousel";
 import { SectionHeader } from "../../components/section-header";
-import { useEffect, useRef } from "react";
-import { initSavedDB } from "@/database/saved";
-import { useHomeStore } from "@/store/home-store";
-import { useTrendingStore } from "@/store/movie/trending";
-import { useSavedStore } from "@/store/movie/saved";
 
 const HomeScreen = () => {
-  const { popularMovies, topRatedMovies, isLoading, error } = useHomeStore();
+  const { popularMovies, topRatedMovies, upcomingMovies, isLoading, error } = useHomeStore();
   const { loadGenresFromStorage } = useTmdbStore();
   const { trendingMovies } = useTmdb();
   const { fetchTrending } = useTrendingStore();
@@ -104,6 +104,26 @@ const HomeScreen = () => {
                   onPress={() => router.push(`/movie/${item.id}`)}
                 />
               )}
+            />
+          )}
+          <SectionHeader
+            title="Upcoming"
+            actionLabel="See All"
+            IconComponent={Ionicons}
+            onActionPress={() => router.push("/upcoming")}
+          />
+          {isLoading ? (
+            <View className="flex-row justify-center py-8">
+              <ActivityIndicator size="large" color="#06b6d4" />
+            </View>
+          ) : error ? (
+            <View className="flex-row justify-center py-8">
+              <Text className="text-red-400 text-base">{error}</Text>
+            </View>
+          ) : (
+            <MovieCarousel
+              movies={upcomingMovies.slice(0, 7)}
+              onPressMovie={(movie) => router.push(`/movie/${movie.id}`)}
             />
           )}
           <SectionHeader

@@ -1,5 +1,5 @@
-import { apiClient } from './client';
 import { GenreListResponse, MovieDetail, MovieListResponse } from '@/types/app-types';
+import { apiClient } from './client';
 
 
 export async function fetchPopularMovies(page: number = 1): Promise<MovieListResponse> {
@@ -82,5 +82,20 @@ export async function fetchTrendingMovies(page: number = 1): Promise<MovieListRe
     return data;
   } catch (err) {
     throw new Error(err as string);
+  }
+}
+
+export async function fetchUpcomingMovies(page: number = 1): Promise<MovieListResponse> {
+  try {
+    const { data } = await apiClient.get<MovieListResponse>(
+      '/movie/upcoming',
+      { params: { page } }
+    );
+    if (!data || !data.results) {
+      throw new Error('Invalid response from TMDB API');
+    }
+    return data;
+  } catch (error) {
+    throw new Error(error as string);
   }
 }
