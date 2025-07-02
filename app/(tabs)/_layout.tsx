@@ -9,7 +9,6 @@ const TAB_ICONS: { name: keyof typeof Ionicons.glyphMap; label: string }[] = [
   { name: "home", label: "Home" },
   { name: "search", label: "Search" },
   { name: "heart", label: "Saved" },
-  { name: "person", label: "Profile" },
 ];
 
 function BottomTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
@@ -66,7 +65,6 @@ export default function TabLayout() {
       <Tabs.Screen name="home" options={{ title: "Home" }} />
       <Tabs.Screen name="search" options={{ title: "Search" }} />
       <Tabs.Screen name="saved" options={{ title: "Saved" }} />
-      <Tabs.Screen name="profile" options={{ title: "Profile" }} />
     </Tabs>
     </SafeAreaView>
   );

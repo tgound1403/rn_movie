@@ -1,50 +1,69 @@
-# Welcome to your Expo app 👋
+# RN Movie Dict 🎬
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A cross-platform movie browser app built with Expo and React Native, powered by [The Movie Database (TMDB)](https://www.themoviedb.org/) API.
 
-## Get started
+Browse, search, and save your favorite movies with a beautiful, modern UI.
 
-1. Install dependencies
+---
+
+## Features
+
+- **Browse Movies:** View popular, top-rated, and trending movies from TMDB.
+- **Search:** Find movies by title with instant results.
+- **Movie Details:** See in-depth info (overview, genres, rating, release date, etc.).
+- **Save Favorites:** Add movies to your personal saved list (stored locally).
+- **Modern UI:** Smooth navigation with bottom tabs (Home, Search, Saved).
+- **Persistent Storage:** Saved movies are available even after restarting the app.
+
+## Screens
+
+- **Home:** Carousels and lists for popular, top-rated, and trending movies.
+- **Search:** Search bar with results and trending suggestions.
+- **Saved:** List of movies you have saved.
+- **Movie Detail:** Full details and actions for each movie.
+
+## Tech Stack
+
+- [Expo](https://expo.dev/) (React Native)
+- [TMDB API](https://www.themoviedb.org/documentation/api)
+- [Zustand](https://zustand-demo.pmnd.rs/) (state management)
+- [NativeWind](https://www.nativewind.dev/) (Tailwind CSS for React Native)
+- [TypeScript](https://www.typescriptlang.org/)
+
+## Getting Started
+
+1. **Install dependencies**
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. **Start the app**
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+   You can then run the app on:
+   - Android emulator
+   - iOS simulator
+   - Expo Go app
+   - Web browser
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Project Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- `app/` — App screens and navigation
+- `components/` — Reusable UI components
+- `api/` — TMDB API client and endpoints
+- `store/` — Zustand stores for state management
+- `database/` — Local storage helpers
+- `types/` — TypeScript types
 
-## Get a fresh project
+## Learn More
 
-When you're ready, run:
+- [Expo documentation](https://docs.expo.dev/)
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/)
 
-```bash
-npm run reset-project
-```
+---
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+> This product uses the TMDB API but is not endorsed or certified by TMDB.
