@@ -38,7 +38,17 @@ Browse, search, and save your favorite movies with a beautiful, modern UI.
    npm install
    ```
 
-2. **Start the app**
+2. **Set your TMDB API Key**
+
+   - Obtain an API key from [TMDB](https://www.themoviedb.org/documentation/api).
+   - Open `app.json` and set your API key in the `extra.TMDB_API_KEY` field:
+     ```json
+     "extra": {
+       "TMDB_API_KEY": "YOUR_TMDB_API_KEY_HERE"
+     }
+     ```
+
+3. **Start the app**
 
    ```bash
    npx expo start
