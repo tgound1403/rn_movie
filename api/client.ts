@@ -15,7 +15,9 @@ export const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   function (config) {
-    console.log(`[API] ${config.method?.toUpperCase()} ${new Date().toLocaleString()} request:`, config.url, config.params);
+    console.log(
+      `[API] ${config.method?.toUpperCase()} | ${new Date().toLocaleString()} | ${config.url} | ${config.params ? JSON.stringify(config.params) : ""}`
+    );
     return config;
   },
   function (error) {
