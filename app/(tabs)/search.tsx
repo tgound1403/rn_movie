@@ -40,7 +40,7 @@ export default function SearchScreen() {
   };
 
   return (
-    <View className="flex-1 bg-neutral-900 pt-10 px-4">
+    <View className="flex-1 bg-neutral-900 px-4">
       <View className="flex-row items-center mb-2">
         <View className="flex-1">
           <SearchBar
@@ -65,6 +65,7 @@ export default function SearchScreen() {
       <FlatList
         data={searchResults}
         keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={{ paddingBottom: 100 }}
         renderItem={({ item, index }) => (
           <MovieItem movie={item} onPress={handleMoviePress} />
         )}

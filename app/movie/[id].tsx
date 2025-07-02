@@ -97,9 +97,7 @@ export default function MovieDetailScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-900">
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Header */}
-        <View className="flex-row items-center justify-between px-4 pt-4">
+      <View className="flex-row items-center justify-between p-4">
           <Pressable onPress={() => router.back()} className="p-2 rounded-full bg-neutral-800 mr-2">
             <Ionicons name="chevron-back" size={24} color="#fff" />
           </Pressable>
@@ -108,7 +106,7 @@ export default function MovieDetailScreen() {
             <Ionicons name="heart" size={24} color={isSaved ? "#ef4444" : "#a1a1aa"} />
           </Pressable>
         </View>
-
+      <ScrollView showsVerticalScrollIndicator={false}>
         {/* Poster */}
         <View className="items-center mt-4">
           <Image

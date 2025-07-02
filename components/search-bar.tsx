@@ -13,7 +13,7 @@ export function SearchBar({ IconComponent, value, onChangeText }: Props) {
       <IconComponent name="search" size={20} color="#a1a1aa" style={{ marginRight: 8 }} />
       <TextInput
         className="flex-1 text-white"
-        placeholder="Search a title.."
+        placeholder="What movie are you looking for?"
         placeholderTextColor="#888"
         accessibilityLabel="Search movies"
         value={value}

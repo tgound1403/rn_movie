@@ -1,4 +1,4 @@
-import { View, Text, FlatList, Pressable, Image } from "react-native";
+import { View, Text, FlatList, Pressable, Image, ScrollView } from "react-native";
 import * as React from "react";
 import { useSavedStore } from "@/store/movie/saved";
 import { SavedMovie } from "@/database/saved";
@@ -49,6 +49,7 @@ export default function SavedScreen() {
         renderItem={({ item }) => <SavedMovieItem movie={item} />}
         keyExtractor={(item) => item.id.toString()}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
         ListEmptyComponent={
           <Text className="text-white flex-1 items-center justify-center text-xl">
             No saved movies

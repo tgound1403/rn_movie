@@ -55,7 +55,7 @@ const HomeScreen = () => {
     <SafeAreaProvider>
       <SafeAreaView className="flex-1 bg-neutral-900">
         <HomeHeader IconComponent={Ionicons} />
-        <ScrollView className="flex-1 px-4 pt-4 pb-10">
+        <ScrollView contentContainerStyle={{ paddingBottom: 100 }} className="flex-1 px-4 pt-4">
           <SectionHeader
             title="Most popular"
             actionLabel="See All"
