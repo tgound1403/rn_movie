@@ -7,16 +7,11 @@ type Props = {
 
 export function HomeHeader({ IconComponent }: Props) {
   return (
-    <View className="flex-row items-center justify-between mb-4">
+    <View className="flex-row items-center justify-between mb-4 px-4">
       <View className="flex-row items-center">
-        <Image
-          source={{ uri: 'https://randomuser.me/api/portraits/men/1.jpg' }}
-          className="w-12 h-12 rounded-full mr-3"
-          accessibilityLabel="User avatar"
-        />
         <View>
-          <Text className="text-lg font-semibold text-white">Hello, Smith</Text>
-          <Text className="text-xs text-neutral-400">Let's stream your favorite movie</Text>
+          <Text className="text-2xl font-semibold text-white">The Movie DB</Text>
+          <Text className="text-md text-neutral-400">Let&apos;s find and save your favorite movie</Text>
         </View>
       </View>
     </View>

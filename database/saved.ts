@@ -61,7 +61,7 @@ export const getSavedMovies = (): Promise<SavedMovie[]> => {
 
 export const deleteMovie = async (movieId: number): Promise<void> => {
   try {
-    await db.execAsync(`DELETE FROM saved WHERE id = ${movieId}`);
+    await db.execAsync(`DELETE FROM saved WHERE movie_id = ${movieId}`);
   } catch (e) {
     console.log("Error deleting movie:", e);
   }

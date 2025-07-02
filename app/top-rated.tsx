@@ -1,14 +1,33 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import * as React from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MovieItem } from '@/components/movie-item';
-import { useTmdb } from '@/hooks/useTmdb';
+import { useTopRatedStore } from '@/store/movie/top-rated';
+import { useCallback } from 'react';
+import { Movie } from '@/types/app-types';
 
 export default function TopRatedScreen() {
-  const { topRatedMovies } = useTmdb();
   const router = useRouter();
+
+  const {fetchNextPage, isTopRatedLoading, topRatedMovies} = useTopRatedStore()
+
+  const loadMovies = useCallback(async () => {
+    try {
+      await fetchNextPage();
+    } catch (e) {
+      console.error("Error loading movies:", e);
+    }
+  }, [fetchNextPage]);
+
+  React.useEffect(() => {
+    loadMovies();
+  }, [loadMovies]);
+
+  const renderItem = ({ item }: { item: Movie }) => (
+    <MovieItem movie={item} onPress={() => router.push(`/movie/${item.id}`)} />
+  );
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-900 px-4 pt-4">
@@ -18,13 +37,15 @@ export default function TopRatedScreen() {
         </Pressable>
         <Text className="text-white text-2xl font-bold flex-1">Top Rated Movies</Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {topRatedMovies.map((movie) => {
-          return (
-            <MovieItem key={movie.id} movie={movie} onPress={() => router.push(`/movie/${movie.id}`)} />      
-          );
-        })}
-      </ScrollView>
+      <FlatList 
+        data={topRatedMovies} 
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        showsVerticalScrollIndicator={false}
+        onEndReached={loadMovies}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={() => isTopRatedLoading ? <ActivityIndicator size="large" color="#06b6d4" /> : null}
+      />
     </SafeAreaView>
   );
 }

@@ -11,7 +11,9 @@ export const useTmdb = () => {
   const trendingMovies = useTrendingStore((state) => state.trendingMovies);
   const savedMovies = useSavedStore((state) => state.savedMovies);
   const genres = useTmdbStore((state) => state.genres);
-  
+  const isPopularLoading = usePopularStore((state) => state.isPopularLoading);
+  const isTopRatedLoading = useTopRatedStore((state) => state.isTopRatedLoading);
+  const isTrendingLoading = useTrendingStore((state) => state.isTrendingLoading);
 
   const getGenresFromIds = useCallback((genreIds: number[]) => {
     return genreIds
@@ -25,6 +27,9 @@ export const useTmdb = () => {
     trendingMovies, 
     savedMovies, 
     genres, 
+    isPopularLoading,
+    isTopRatedLoading,
+    isTrendingLoading,
     getGenresFromIds 
   };
 };
