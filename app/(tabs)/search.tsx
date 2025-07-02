@@ -52,38 +52,40 @@ export default function SearchScreen() {
             }}
           />
         </View>
-        {searchResults.length > 0 && <Pressable
-          className="ml-2"
-          accessibilityRole="button"
-          onPress={handleCancel}
-        >
-          <Text className="text-cyan-400 text-base">Cancel</Text>
-        </Pressable>}
+        {searchResults.length > 0 && (
+          <Pressable
+            className="ml-2"
+            accessibilityRole="button"
+            onPress={handleCancel}
+          >
+            <Text className="text-cyan-400 text-base">Cancel</Text>
+          </Pressable>
+        )}
       </View>
       <FlatList
         data={searchResults}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <MovieItem
-            movie={item}
-            onPress={handleMoviePress}
-          />
+        renderItem={({ item, index }) => (
+          <MovieItem movie={item} onPress={handleMoviePress} />
         )}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={() => (
           <View className="mt-4">
-            <Text className="text-white text-lg font-bold mb-2">Top 3 on Trending Movies</Text>
+            <Text className="text-white text-lg font-bold mb-2">
+              Top 3 on Trending Movies
+            </Text>
             <FlatList
-            data={trendingMovies.slice(0, 3)}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <MovieItem
-                movie={item}
-                onPress={handleMoviePress}
-              />
-            )}
-          />
-          <Text className="text-white text-center text-lg font-bold mb-2"></Text>
+              data={trendingMovies.slice(0, 3)}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item, index }) => (
+                <View className="flex-row items-center justify-between gap-4">
+                  <Text className={`text-white text-2xl font-bold mr-4 mb-4 `}>
+                    #{index + 1}
+                  </Text>
+                  <MovieItem movie={item} onPress={handleMoviePress} />
+                </View>
+              )}
+            />       
           </View>
         )}
       />

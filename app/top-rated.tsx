@@ -25,13 +25,16 @@ export default function TopRatedScreen() {
     loadMovies();
   }, [loadMovies]);
 
-  const renderItem = ({ item }: { item: Movie }) => (
-    <MovieItem movie={item} onPress={() => router.push(`/movie/${item.id}`)} />
+  const renderItem = ({ item, index }: { item: Movie, index: number }) => (
+    <View className="mb-4 flex-row items-center justify-between gap-4">
+      {index <= 9 && <Text className={`text-white text-2xl font-bold mr-4 mb-4`}>#{index + 1}</Text>}
+      <MovieItem movie={item} onPress={() => router.push(`/movie/${item.id}`)} />
+    </View>
   );
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-900 px-4 pt-4">
-      <View className="flex-row items-center mb-4">
+      <View className="flex-row items-center mb-4 sticky top-0 bg-neutral-900">
         <Pressable onPress={() => router.back()} className="p-2 rounded-full bg-neutral-800 mr-2">
           <Ionicons name="chevron-back" size={24} color="#fff" />
         </Pressable>

@@ -36,7 +36,7 @@ export default function PopularScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-neutral-900 px-4 pt-4">
-      <View className="flex-row items-center mb-4">
+      <View className="flex-row items-center mb-4 sticky top-0 bg-neutral-900">
         <Pressable
           onPress={() => router.back()}
           className="p-2 rounded-full bg-neutral-800 mr-2"
