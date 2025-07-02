@@ -1,22 +1,26 @@
+import { useTmdb } from "@/hooks/useTmdb";
 import { Movie } from "@/types/app-types";
-import { Pressable, View, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import * as React from "react";
-import { useTmdbStore } from "@/store/tmdb-store";
-import { useTmdb } from "@/hooks/useTmdb";
+import { Image, Pressable, Text, View } from "react-native";
 
 type MovieItemProps = {
   movie: Movie;
   onPress?: (movie: Movie) => void;
 };
 
-export function MovieItem({ movie, onPress }: MovieItemProps) {
+export const MovieItem = React.memo(function MovieItem({
+  movie,
+  onPress,
+}: MovieItemProps) {
   const getYear = React.useCallback((date?: string) => {
     return date ? new Date(date).getFullYear() : "-";
   }, []);
 
   const { getGenresFromIds } = useTmdb();
-  const displayGenres = getGenresFromIds(movie.genre_ids ?? []).slice(0, 2).join(', ');
+  const displayGenres = getGenresFromIds(movie.genre_ids ?? [])
+    .slice(0, 2)
+    .join(", ");
 
   return (
     <Pressable
@@ -74,4 +78,4 @@ export function MovieItem({ movie, onPress }: MovieItemProps) {
       </View>
     </Pressable>
   );
-}
+});

@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { Image, Pressable, Text, View } from 'react-native';
-import { useTmdb } from '@/hooks/useTmdb';
+import * as React from "react";
+import { Image, Pressable, Text, View } from "react-native";
+import { useTmdb } from "@/hooks/useTmdb";
 
 type Props = {
   title: string;
@@ -11,9 +11,18 @@ type Props = {
   onPress?: () => void;
 };
 
-export function MovieCard({ title, genre_ids, vote_average, poster_path, IconComponent, onPress }: Props) {
+export const MovieCard = React.memo(function MovieCard({
+  title,
+  genre_ids,
+  vote_average,
+  poster_path,
+  IconComponent,
+  onPress,
+}: Props) {
   const { getGenresFromIds } = useTmdb();
-  const displayGenre = getGenresFromIds(genre_ids ?? []).slice(0, 2).join(', ');
+  const displayGenre = getGenresFromIds(genre_ids ?? [])
+    .slice(0, 2)
+    .join(", ");
 
   return (
     <Pressable onPress={onPress} className="w-36 mr-4">
@@ -30,14 +39,25 @@ export function MovieCard({ title, genre_ids, vote_average, poster_path, IconCom
           </View>
         )}
         <View className="absolute top-2 right-2 bg-black/60 px-2 py-1 rounded-full flex-row items-center">
-          <IconComponent name="star" size={14} color="#fbbf24" style={{ marginRight: 2 }} />
-          <Text className="text-white text-xs font-bold">{vote_average?.toFixed(1) ?? '-'}</Text>
+          <IconComponent
+            name="star"
+            size={14}
+            color="#fbbf24"
+            style={{ marginRight: 2 }}
+          />
+          <Text className="text-white text-xs font-bold">
+            {vote_average?.toFixed(1) ?? "-"}
+          </Text>
         </View>
         <View className="p-2">
-          <Text className="text-white text-sm font-semibold" numberOfLines={1}>{title}</Text>
-          <Text className="text-neutral-400 text-xs" numberOfLines={1}>{displayGenre}</Text>
+          <Text className="text-white text-sm font-semibold" numberOfLines={1}>
+            {title}
+          </Text>
+          <Text className="text-neutral-400 text-xs" numberOfLines={1}>
+            {displayGenre}
+          </Text>
         </View>
       </View>
     </Pressable>
   );
-} 
+});
