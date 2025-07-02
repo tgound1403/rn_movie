@@ -1,7 +1,7 @@
+import { Genre, MovieDetail } from "@/types/app-types";
 import { create } from "zustand";
 import { fetchGenres, fetchMovieDetail } from "../api/tmdb";
 import { getItem, setItem } from "../database/async-storage";
-import { Genre, MovieDetail } from "@/types/app-types";
 
 const GENRES_STORAGE_KEY = "movie_genres";
 

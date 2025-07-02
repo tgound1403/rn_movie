@@ -6,14 +6,12 @@ import { router } from "expo-router";
 import * as React from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { useSearchStore } from "@/store/movie/search";
-import { getGenreNames, useTmdbStore } from "@/store/tmdb-store";
-import { useTrendingStore } from "@/store/movie/trending";
+import { useTmdb } from "@/hooks/useTmdb";
 
 export default function SearchScreen() {
   const [query, setQuery] = React.useState("");
   const { search, searchResults, clearSearch } = useSearchStore();
-  const { trendingMovies, fetchTrending } = useTrendingStore();
-  const { genres } = useTmdbStore();
+  const { trendingMovies } = useTmdb();
 
   const handleMoviePress = (movie: Movie) => {
     router.push(`/movie/${movie.id}`);
@@ -23,7 +21,7 @@ export default function SearchScreen() {
     func: (...args: T) => void,
     delay: number
   ): (...args: T) => void {
-    let timer: NodeJS.Timeout | null = null;
+    let timer: number;
     return (...args: T) => {
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
@@ -68,7 +66,6 @@ export default function SearchScreen() {
         renderItem={({ item }) => (
           <MovieItem
             movie={item}
-            genres={getGenreNames(item.genre_ids ?? [], genres)}
             onPress={handleMoviePress}
           />
         )}
@@ -82,7 +79,6 @@ export default function SearchScreen() {
             renderItem={({ item }) => (
               <MovieItem
                 movie={item}
-                genres={getGenreNames(item.genre_ids ?? [], genres)}
                 onPress={handleMoviePress}
               />
             )}

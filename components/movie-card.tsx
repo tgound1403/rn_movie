@@ -1,27 +1,19 @@
 import * as React from 'react';
 import { Image, Pressable, Text, View } from 'react-native';
-import type { Genre } from '../api/tmdb';
-import { getGenreNames } from '../store/tmdb-store';
+import { useTmdb } from '@/hooks/useTmdb';
 
 type Props = {
   title: string;
   genre_ids?: number[];
-  genres?: Genre[];
   vote_average?: number;
   poster_path?: string | null;
   IconComponent: React.ComponentType<any>;
   onPress?: () => void;
 };
 
-export function MovieCard({ title, genre_ids, genres, vote_average, poster_path, IconComponent, onPress }: Props) {
-  const genreNames = React.useMemo(() => {
-    if (genre_ids && genres) {
-      return getGenreNames(genre_ids, genres);
-    }
-    return [];
-  }, [genre_ids, genres]);
-
-  const displayGenre = genreNames.length > 0 ? genreNames.slice(0, 2).join(', ') : '';
+export function MovieCard({ title, genre_ids, vote_average, poster_path, IconComponent, onPress }: Props) {
+  const { getGenresFromIds } = useTmdb();
+  const displayGenre = getGenresFromIds(genre_ids ?? []).slice(0, 2).join(', ');
 
   return (
     <Pressable onPress={onPress} className="w-36 mr-4">

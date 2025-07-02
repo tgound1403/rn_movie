@@ -1,4 +1,4 @@
-import { deleteMovie, getSavedMovies, saveMovie, SavedMovie } from "@/database/saved";
+import { deleteMovie, getSavedMovies, SavedMovie, saveMovie } from "@/database/saved";
 import { MovieDetail } from "@/types/app-types";
 import { create } from "zustand";
 
@@ -34,4 +34,4 @@ export const useSavedStore = create<SavedStore>((set, get) => ({
         await get().fetchSavedMovies();
         console.log("Movie removed:", get().savedMovies.length);
     }
-}))
+}));

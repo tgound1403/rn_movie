@@ -4,13 +4,11 @@ import { useSavedStore } from "@/store/movie/saved";
 import { SavedMovie } from "@/database/saved";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useTmdb } from "@/hooks/useTmdb";
 
 export default function SavedScreen() {
-  const { savedMovies, fetchSavedMovies, removeMovie } = useSavedStore();
-
-  React.useEffect(() => {
-    fetchSavedMovies();
-  }, []);
+  const { removeMovie } = useSavedStore();
+  const { savedMovies } = useTmdb();
 
   const SavedMovieItem = ({ movie }: { movie: SavedMovie }) => {
     return (

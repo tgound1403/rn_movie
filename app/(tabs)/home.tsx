@@ -1,3 +1,6 @@
+import { MovieItem } from '@/components/movie-item';
+import { useTmdb } from '@/hooks/useTmdb';
+import { useTmdbStore } from '@/store/tmdb-store';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import * as React from 'react';
@@ -7,39 +10,52 @@ import { HomeHeader } from '../../components/home/home-header';
 import { MovieCard } from '../../components/movie-card';
 import { MovieCarousel } from '../../components/movie-carousel';
 import { SectionHeader } from '../../components/section-header';
-import { getGenreNames, useTmdbStore } from '../../store/tmdb-store';
 import { usePopularStore } from '@/store/movie/popular';
 import { useTopRatedStore } from '@/store/movie/top-rated';
 import { useTrendingStore } from '@/store/movie/trending';
-import { MovieItem } from '@/components/movie-item';
 import { useSavedStore } from '@/store/movie/saved';
+import { useEffect, useRef } from 'react';
 import { initSavedDB } from '@/database/saved';
 
 const HomeScreen = () => {
-  const { genres, isLoading, error, fetchGenres, loadGenresFromStorage } = useTmdbStore();
-  const { popularMovies, fetchPopular } = usePopularStore();
-  const { topRatedMovies, fetchTopRated } = useTopRatedStore();
-  const { trendingMovies, fetchTrending } = useTrendingStore();
-  const { fetchSavedMovies } = useSavedStore();
+  const { isLoading, error } = useTmdbStore();
+  const { popularMovies, topRatedMovies, trendingMovies } = useTmdb();
   const router = useRouter();
 
-  React.useEffect(() => {
-    const initializeData = async () => {
-      await initSavedDB();
-      await loadGenresFromStorage();
+  const isInitialized = useRef(false);
+  
+  const fetchPopularMovies = usePopularStore((state) => state.fetchPopular);
+  const fetchTopRatedMovies = useTopRatedStore((state) => state.fetchTopRated);
+  const fetchTrendingMovies = useTrendingStore((state) => state.fetchTrending);
+  const fetchSavedMovies = useSavedStore((state) => state.fetchSavedMovies);
+  const fetchGenres = useTmdbStore((state) => state.fetchGenres);
+  const loadGenresFromStorage = useTmdbStore((state) => state.loadGenresFromStorage);
 
+  useEffect(() => {
+    const initializeData = async () => {
+      if (isInitialized.current) return;
+      
+      console.log("Initializing TMDB data...");
+      isInitialized.current = true;
+      
+      // Initialize database first
+      await initSavedDB();
+      
+      // Load genres first (from storage if available)
+      await loadGenresFromStorage();
+      
+      // Fetch all movie data in parallel
       await Promise.all([
-        popularMovies.length === 0 ? fetchPopular() : Promise.resolve(),
-        topRatedMovies.length === 0 ? fetchTopRated() : Promise.resolve(),
-        trendingMovies.length === 0 ? fetchTrending() : Promise.resolve(),
+        fetchPopularMovies(),
+        fetchTopRatedMovies(),
+        fetchTrendingMovies(),
         fetchSavedMovies(),
-        // Only fetch genres if we don't have them locally
-        genres.length === 0 ? fetchGenres() : Promise.resolve()
+        fetchGenres()
       ]);
     };
 
     initializeData();
-  }, [fetchPopular, fetchTopRated, fetchGenres, fetchTrending, loadGenresFromStorage, genres.length]);
+  }, [fetchPopularMovies, fetchTopRatedMovies, fetchTrendingMovies, fetchSavedMovies, fetchGenres, loadGenresFromStorage]);
 
   return (
     <SafeAreaProvider>
@@ -63,7 +79,6 @@ const HomeScreen = () => {
           ) : (
             <MovieCarousel
               movies={popularMovies.slice(0, 7)}
-              genres={genres}
               onPressMovie={(movie) => router.push(`/movie/${movie.id}`)}
             />
           )}
@@ -88,7 +103,6 @@ const HomeScreen = () => {
                 <MovieCard 
                   key={movie.id} 
                   {...movie} 
-                  genres={genres} 
                   IconComponent={Ionicons}
                   onPress={() => router.push(`/movie/${movie.id}`)}
                 />
@@ -99,7 +113,7 @@ const HomeScreen = () => {
             title="#10 on Trending"
             actionLabel="See All"
             IconComponent={Ionicons}
-            onActionPress={() => router.push('/trending')}
+            onActionPress={() => router.push('/popular')}
           />
           {isLoading ? (
             <View className="flex-row justify-center py-8">
@@ -116,7 +130,10 @@ const HomeScreen = () => {
               data={trendingMovies.slice(0, 10)}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <MovieItem movie={item} genres={getGenreNames(item.genre_ids ?? [], genres)} onPress={() => router.push(`/movie/${item.id}`)} />
+                <MovieItem 
+                  movie={item} 
+                  onPress={() => router.push(`/movie/${item.id}`)} 
+                />
               )}
             />
           )}

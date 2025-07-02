@@ -1,5 +1,6 @@
-import type { Genre, Movie } from "@/types/app-types";
-import { getGenreNames } from "@/store/tmdb-store";
+import { useTmdb } from "@/hooks/useTmdb";
+import { useTmdbStore } from "@/store/tmdb-store";
+import type { Movie } from "@/types/app-types";
 import * as React from "react";
 import { Dimensions, Image, Pressable, Text, View } from "react-native";
 import Carousel from "react-native-reanimated-carousel";
@@ -10,17 +11,15 @@ const CARD_HEIGHT = CARD_WIDTH * 0.56 + 40;
 
 export type MovieCarouselProps = {
   movies: Movie[];
-  genres: Genre[];
   onPressMovie?: (movie: Movie) => void;
 };
 
 export function MovieCarousel({
   movies,
-  genres,
   onPressMovie,
 }: MovieCarouselProps) {
   const [activeIndex, setActiveIndex] = React.useState(0);
-
+  const { getGenresFromIds } = useTmdb();
   return (
     <View className="items-center mt-2 mb-4">
       <Carousel
@@ -32,11 +31,7 @@ export function MovieCarousel({
         scrollAnimationDuration={500}
         onSnapToItem={setActiveIndex}
         renderItem={({ item }) => {
-          const genreNames = item.genre_ids
-            ? getGenreNames(item.genre_ids, genres)
-            : [];
-          const displayGenre =
-            genreNames.length > 0 ? genreNames.slice(0, 2).join(", ") : "";
+          const displayGenre = getGenresFromIds(item.genre_ids ?? []).slice(0, 2).join(', ');
           return (
             <Pressable
               onPress={() => onPressMovie?.(item)}
